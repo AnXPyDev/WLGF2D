@@ -1,2 +1,2 @@
-# WLGF
-WeightLess Game Framework
+# WLGF2D
+WeightLess Game Framework 2D
