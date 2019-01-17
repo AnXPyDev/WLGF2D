@@ -14,3 +14,6 @@ main.o: $(DEPS) $(OBJ)
 
 clean:
 	rm $(OBJ) main.o
+
+run:
+	./main.out

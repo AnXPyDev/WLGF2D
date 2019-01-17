@@ -17,6 +17,7 @@
 
 // This game engine/framework (i dont care) uses the SFML2 library for rendering graphics, and doing stuff with audio (possibly in the future)
 #include <SFML/Graphics.hpp>
+#include <string>
 
 // This namespace contains every component of the engine, as mentioned before
 namespace wgf {
@@ -33,4 +34,21 @@ namespace wgf {
     C2();
   private:
   };
+
+  // Class used for configuring initialization of game engine
+  class Config {
+  public:
+    C2 viewsize;
+    std::string name;
+    Config(C2 viewsize, std::string name);
+  };
+
+  // This namespace includes functions needed to initialize and run a project
+  namespace engine {
+    void mainLoop();
+    void draw();
+    void tick();
+    void init(Config config);
+  }
+
 }
