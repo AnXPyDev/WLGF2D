@@ -32,17 +32,29 @@ namespace wgf {
     C2(float x, float y);
     C2(float x);
     C2();
-  private:
   };
 
   // Class used for configuring initialization of game engine
-  class Config {
-  public:
+  struct Config {
     C2 viewsize;
     std::string name;
     Config(C2 viewsize, std::string name);
   };
 
+  // Viewport class stores SFML window instances
+  class Viewport {
+  public:
+    C2 size;
+    sf::RenderWindow window;
+    void set(C2 size, std::string name);
+    Viewport();
+  };
+
+  // Holds runtime information about game
+  namespace game {
+    extern Viewport viewport;
+  }
+  
   // This namespace includes functions needed to initialize and run a project
   namespace engine {
     void mainLoop();

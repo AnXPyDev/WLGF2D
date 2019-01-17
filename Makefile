@@ -1,5 +1,5 @@
 CC=g++
-OBJ=c2.o
+OBJ=c2.o engine.o config.o
 DEPS=main.hpp
 
 
@@ -8,6 +8,12 @@ main: main.o $(DEPS) $(OBJ)
 
 c2.o: $(DEPS)
 	$(CC) -c modules/c2.cpp -I /usr/include/
+
+engine.o: $(DEPS)
+	$(CC) -c modules/engine.cpp -I /usr/include/
+
+config.o: $(DEPS)
+	$(CC) -c modules/config.cpp -I /usr/include/
 
 main.o: $(DEPS) $(OBJ)
 	$(CC) -c main.cpp -I /usr/include/
