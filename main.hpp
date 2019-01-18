@@ -50,7 +50,7 @@ namespace wgf {
     Viewport();
   };
 
-  // Holds runtime information about game
+  // Holds information about project
   namespace game {
     extern Viewport viewport;
   }

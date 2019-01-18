@@ -1,5 +1,5 @@
-#include "../main.cpp"
+#include "../main.hpp"
 
-namespace game {
-  wgf::Viewport viewport();
+namespace wgf::game {
+  wgf::Viewport viewport;
 }
