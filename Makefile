@@ -1,10 +1,10 @@
 CC=g++
-OBJ=c2.o game.o engine.o config.o viewport.o
+OBJ=c2.o game.o engine.o config.o viewport.o actor.o background.o scene.o
 DEPS=main.hpp
 
 
-main: main.o $(DEPS) $(OBJ)
-	$(CC) -o main.out main.o $(OBJ) -lsfml-graphics -lsfml-window -lsfml-system
+main: $(DEPS) $(OBJ) project/*.hpp
+	$(CC) -o main.out project/*.cpp $(OBJ) -I /usr/include/ -lsfml-graphics -lsfml-window -lsfml-system 
 
 c2.o: $(DEPS)
 	$(CC) -c modules/c2.cpp -I /usr/include/
@@ -21,11 +21,17 @@ config.o: $(DEPS)
 viewport.o: $(DEPS)
 	$(CC) -c modules/viewport.cpp -I /usr/include/
 
-main.o: $(DEPS) $(OBJ)
-	$(CC) -c main.cpp -I /usr/include/
+actor.o: $(DEPS)
+	$(CC) -c modules/actor.cpp -I /usr/include/
+
+background.o: $(DEPS)
+	$(CC) -c modules/background.cpp -I /usr/include/
+
+scene.o: $(DEPS)
+	$(CC) -c modules/scene.cpp -I /usr/include/
 
 clean:
-	rm $(OBJ) main.o
+	rm $(OBJ)
 
 run:
 	./main.out

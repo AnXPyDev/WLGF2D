@@ -4,11 +4,28 @@
 
 // Definition of tick function
 void wgf::engine::tick() {
-  
+  for(int x = 0; x < wgf::act::instances.size(); x++) {
+    for(int y = 0; y < wgf::act::instances[x].size(); y++) {
+      wgf::act::instances[x][y]->tick();
+    }
+  }
+  wgf::game::viewport.window.clear();
+  for(int x = 0; x < wgf::bck::instances.size(); x++) {
+    wgf::bck::instances[x]->update();
+  }
 }
 
 // Definition of draw function
 void wgf::engine::draw() {
+  for(int x = 0; x < wgf::act::instances.size(); x++) {
+    for(int y = 0; y < wgf::act::instances[x].size(); y++) {
+      wgf::act::instances[x][y]->draw();
+    }
+  }
+  wgf::game::viewport.window.clear();
+  for(int x = 0; x < wgf::bck::instances.size(); x++) {
+    wgf::bck::instances[x]->draw();
+  }
   
 }
 
@@ -17,8 +34,9 @@ void wgf::engine::mainLoop() {
   auto t0 = std::chrono::system_clock::now();
   while(wgf::game::viewport.window.isOpen()) {
     auto delta = std::chrono::system_clock::now() - t0;
-    if(std::chrono::duration_cast<std::chrono::milliseconds>(delta).count() >= 1000 / 60) {
+    if(std::chrono::duration_cast<std::chrono::milliseconds>(delta).count() >= 1000 / wgf::game::scene->tps) {
       wgf::engine::tick();
+      wgf::engine::draw();
       wgf::game::viewport.window.display();
       t0 = std::chrono::system_clock::now();
     }

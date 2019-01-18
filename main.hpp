@@ -18,41 +18,114 @@
 // This game engine/framework (i dont care) uses the SFML2 library for rendering graphics, and doing stuff with audio (possibly in the future)
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <vector>
+#include <map>
 
 // This namespace contains every component of the engine, as mentioned before
 namespace wgf {
   using namespace wgf;
 
   // This class is used for storing coordinates in a two dimensional space (x and y axis)
-  class C2 {
+  class C2d {
   public:
     float x, y; // These store the position
-    void operator+= (C2 other); // Increments x and y value of this instance by the other instances values
-    void operator=  (C2 other); // Copies x and y values of other to this
-    C2(float x, float y);
-    C2(float x);
-    C2();
+    void operator+= (C2d other); // Increments x and y value of this instance by the other instances values
+    void operator=  (C2d other); // Copies x and y values of other to this
+    C2d(float x, float y);
+    C2d(float x);
+    C2d();
   };
 
   // Class used for configuring initialization of game engine
   struct Config {
-    C2 viewsize;
+    C2d viewsize;
     std::string name;
-    Config(C2 viewsize, std::string name);
+    Config(C2d viewsize, std::string name);
   };
 
   // Viewport class stores SFML window instances
   class Viewport {
   public:
-    C2 size;
+    C2d size;
     sf::RenderWindow window;
-    void set(C2 size, std::string name);
+    void set(C2d size, std::string name);
     Viewport();
   };
 
+  // Basic prototype for ingame object (actor)
+  class Actor {
+  public:
+    int id;
+    std::string name;
+    C2d pos;
+    C2d size;
+    void update();
+    virtual void tick();
+    virtual void draw();
+    Actor(C2d pos, C2d size, std::string name = "default");
+  };
+
+  // Class for a room like object
+  class Scene {
+  public:
+    C2d size;
+    int tps;
+    void load();
+    virtual void beforeLoad();
+    virtual void onLoad();
+    virtual void afterLoad();
+    Scene(C2d size, int tps);
+  };
+
+  // Background class
+  class Background {
+  public:
+    void update();
+    virtual void draw();
+    virtual void tick();
+    Background();
+  };
+
+  // Background with solid color
+  class SolidBackground : public Background {
+  public:
+    sf::Color color;
+    void draw();
+    SolidBackground(sf::Color color);
+  };
+
+  // Functions related to backgrounds
+  namespace bck {
+    extern std::vector<Background*> instances;
+    void spawnBackground(Background* background);
+  }
+
+  // Functions related to actors
+  namespace act {
+    // Holds currently existing instances of actors
+    extern std::vector<std::vector<Actor*>> instances;
+    // Keys to index of actor name in act::instances
+    extern std::map<std::string, int> keys;
+    // Map of traits and their Actors
+    extern std::map<std::string, std::vector<std::string>> traits;
+    // Defines actors
+    int define(std::string name, std::vector<std::string> traits);
+    // Spawns actor
+    Actor* spawn(std::string name, Actor* instance);
+    // Kills actor
+    void kill(std::string name, int id);
+    // Returns pointer to actor
+    Actor* get(std::string name, int id);
+    // Returns actors by traits sorted by name
+    std::map<std::string, std::vector<Actor*>> getByTraitByName(std::vector<std::string> traits);
+    // Returns actors in a single vector
+    std::vector<Actor*> getByTrait(std::vector<std::string> traits);
+  }
+  
   // Holds information about project
   namespace game {
     extern Viewport viewport;
+    extern Scene* scene;
   }
   
   // This namespace includes functions needed to initialize and run a project
