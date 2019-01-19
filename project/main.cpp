@@ -87,16 +87,32 @@ Ball::Ball() : Actor(C2d(), C2d(10)) {
   this->velocity.y = (rand() % 3 + 4) * (rand() % 100 < 50 ? -1:1);
 }
 
+class Brick : public Actor {
+public:
+  void draw();
+  Brick(C2d _pos) : Actor(_pos, C2d(60, 20), "brick") {};
+};
+
+void Brick::draw() {
+  cx.drawRect(this->pos, this->size, sf::Color::White);
+}
+
 void Scene0::onLoad() {
   bck::spawnBackground(new SolidBackground(sf::Color::Black));
   act::spawn("paddle", new Paddle(250));
   act::spawn("ball", new Ball());
+  for(int x = -game::scene->size.x / 2 + 40; x < game::scene->size.x / 2; x += 80) {
+    for(int y = -game::scene->size.y / 2 + 20; y < -40; y += 40) {
+      act::spawn("brick", new Brick(C2d(x,y)));
+    }
+  }
 }
 
 int main() {
   engine::init(Config(C2d(800,600), "breakout"));
   act::define("paddle", std::vector<std::string>({"solid"}));
   act::define("ball", std::vector<std::string>());
+  act::define("brick", std::vector<std::string>({"solid"}));
   Scene0 x;
   x.load();
   engine::mainLoop();
