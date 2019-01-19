@@ -4,27 +4,26 @@
 
 // Definition of tick function
 void wgf::engine::tick() {
-  for(int x = 0; x < wgf::act::instances.size(); x++) {
-    for(int y = 0; y < wgf::act::instances[x].size(); y++) {
-      wgf::act::instances[x][y]->tick();
-    }
-  }
-  wgf::game::viewport.window.clear();
   for(int x = 0; x < wgf::bck::instances.size(); x++) {
     wgf::bck::instances[x]->update();
+  }
+  for(int x = 0; x < wgf::act::instances.size(); x++) {
+    for(int y = 0; y < wgf::act::instances[x].size(); y++) {
+      wgf::act::instances[x][y]->update();
+    }
   }
 }
 
 // Definition of draw function
 void wgf::engine::draw() {
+  wgf::game::viewport.window.clear();
+  for(int x = 0; x < wgf::bck::instances.size(); x++) {
+    wgf::bck::instances[x]->draw();
+  }
   for(int x = 0; x < wgf::act::instances.size(); x++) {
     for(int y = 0; y < wgf::act::instances[x].size(); y++) {
       wgf::act::instances[x][y]->draw();
     }
-  }
-  wgf::game::viewport.window.clear();
-  for(int x = 0; x < wgf::bck::instances.size(); x++) {
-    wgf::bck::instances[x]->draw();
   }
   
 }
@@ -57,4 +56,5 @@ void wgf::engine::mainLoop() {
 void wgf::engine::init(wgf::Config config) {
   srand(time(NULL));
   wgf::game::viewport.set(config.viewsize, config.name);
+  wgf::cx.set(&wgf::game::viewport);
 }

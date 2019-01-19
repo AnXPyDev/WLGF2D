@@ -12,11 +12,7 @@ wgf::SolidBackground::SolidBackground(sf::Color color) : Background() {
 }
 
 void wgf::SolidBackground::draw() {
-  sf::RectangleShape rect;
-  rect.setFillColor(this->color);
-  rect.setPosition(0, 0);
-  rect.setSize(sf::Vector2f(wgf::game::viewport.size.x, wgf::game::viewport.size.y));
-  wgf::game::viewport.window.draw(rect);
+  wgf::cx.drawRect(wgf::C2d(), wgf::game::viewport.size, this->color);
 }
 
 namespace wgf::bck {

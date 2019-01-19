@@ -30,7 +30,22 @@ namespace wgf {
   public:
     float x, y; // These store the position
     void operator+= (C2d other); // Increments x and y value of this instance by the other instances values
+    void operator+= (float x); // Increments x and y value of this instance by the other instances values
+    void operator-= (C2d other); // Increments x and y value of this instance by the other instances values
+    void operator-= (float x); // Increments x and y value of this instance by the other instances values
     void operator=  (C2d other); // Copies x and y values of other to this
+    void operator*= (C2d other); // Multiplies x and y values of this by other's values
+    void operator*= (float x); // Multiplies x and y values of this by other's values
+    void operator/= (C2d other); // Divides x and y values of this by other's values
+    void operator/= (float x); // Divides x and y values of this by other's values
+    C2d operator/ (C2d other); // Divides x and y values of this by other's values and returns new C2d
+    C2d operator/ (float x); // Divides x and y values of this by other's values and returns new C2d
+    C2d operator* (C2d other); // Divides x and y values of this by other's values and returns new C2d
+    C2d operator* (float x); // Divides x and y values of this by other's values and returns new C2d
+    C2d operator+ (C2d other); // Divides x and y values of this by other's values and returns new C2d
+    C2d operator+ (float x); // Divides x and y values of this by other's values and returns new C2d
+    C2d operator- (C2d other); // Divides x and y values of this by other's values and returns new C2d
+    C2d operator- (float x); // Divides x and y values of this by other's values and returns new C2d
     C2d(float x, float y);
     C2d(float x);
     C2d();
@@ -50,6 +65,27 @@ namespace wgf {
     sf::RenderWindow window;
     void set(C2d size, std::string name);
     Viewport();
+  };
+
+  class Canvas {
+  public:
+    sf::RectangleShape draw_rect;
+    Viewport* view;
+    std::vector<C2d> save_translate;
+    std::vector<C2d> save_scale;
+    std::vector<C2d> save_rotation_origin;
+    std::vector<float> save_rotation;
+    C2d translate;
+    C2d scale;
+    C2d rotation_origin;
+    C2d base_offset;
+    float rotate;
+    void save();
+    void restore();
+    void drawRect(C2d pos, C2d size, sf::Color color);
+    Canvas(Viewport* view);
+    Canvas();
+    void set(Viewport* view);
   };
 
   // Basic prototype for ingame object (actor)
@@ -121,6 +157,22 @@ namespace wgf {
     // Returns actors in a single vector
     std::vector<Actor*> getByTrait(std::vector<std::string> traits);
   }
+
+  extern Canvas cx;
+
+  // Utility functions
+  namespace util { 
+    // Clamps a value between a min and max value
+    float clamp(float x, float min, float max);
+    int clamp(int x, int min, int max);
+    double clamp(double x, double min, double max);
+    // Aproaches to value by ammount
+    float approach(float x, float y, float amt);
+    int approach(int x, int y, int amt);
+    double approach(double x, double y, double amt);
+    // Returns true if the actors' rectangle bounds collide
+    bool collides(Actor* a0, Actor* a1);
+  }
   
   // Holds information about project
   namespace game {
@@ -135,5 +187,6 @@ namespace wgf {
     void tick();
     void init(Config config);
   }
+
 
 }
