@@ -15,7 +15,6 @@ void wgf::Canvas::set(wgf::Viewport* view) {
   this->view = view;
   this->scale = C2d(1);
   this->base_offset = view->size / 2;
-  std::cout << this->base_offset.x << " " << this->base_offset.y << std::endl;
 }
 
 void wgf::Canvas::save() {

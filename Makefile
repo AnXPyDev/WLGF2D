@@ -1,5 +1,5 @@
 CC=g++
-OBJ=c2.o game.o canvas.o draw.o engine.o config.o viewport.o actor.o background.o scene.o
+OBJ=c2.o game.o util.o canvas.o draw.o engine.o config.o viewport.o actor.o background.o scene.o
 DEPS=main.hpp
 
 
@@ -35,6 +35,9 @@ draw.o: $(DEPS)
 
 canvas.o: $(DEPS)
 	$(CC) -c modules/canvas.cpp -I /usr/include/
+
+util.o: $(DEPS)
+	$(CC) -c modules/util.cpp -I /usr/include/
 
 clean:
 	rm $(OBJ)
