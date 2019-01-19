@@ -8,7 +8,7 @@ C2d testCoord(200,200);
 
 class Scene0 : public wgf::Scene {
 public:
-  Scene0() : Scene(wgf::C2d(800,600), 10) {};
+  Scene0() : Scene(wgf::C2d(800,600), 60) {};
 };
 
 class Test0 : public wgf::Actor {
@@ -17,9 +17,11 @@ public:
   void draw() {
     std::cout << "skrrrt" << std::endl;
     cx.save();
-    cx.translate -= 200;
     cx.drawRect(this->pos, this->size, sf::Color::White);
     cx.restore();
+  }
+  void tick() {
+    this->pos += 0.5;
   }
 };
 
