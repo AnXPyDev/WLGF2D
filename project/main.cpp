@@ -1,5 +1,6 @@
 #include "../main.hpp"
 #include <iostream>
+#include <string>
 #include <SFML/Graphics.hpp>
 
 using namespace wgf;
@@ -12,7 +13,7 @@ public:
 
 class Paddle : public wgf::Actor {
 public:
-  Paddle(float ypos) : Actor(wgf::C2d(0, ypos), wgf::C2d(50, 10), "paddle") {
+  Paddle(float ypos) : Actor(wgf::C2d(0, ypos), wgf::C2d(75, 10), "paddle") {
     this->speed = 10;
   };
   void tick();
@@ -21,10 +22,10 @@ public:
 };
 
 void Paddle::tick() {
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && isWinFocused) {
     this->pos.x -= this->speed;
   }
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && isWinFocused) {
     this->pos.x += this->speed;
   }
   this->pos.x = util::clamp(this->pos.x, (float)-400, (float)400);
@@ -35,14 +36,67 @@ void Paddle::draw() {
   cx.drawRect(this->pos, this->size, sf::Color::White);
 }
 
+class Ball : public Actor {
+public:
+  C2d velocity;
+  void tick();
+  void draw();
+  Ball();
+};
+
+void Ball::tick() {
+  this->pos.x += this->velocity.x;
+  this->pos.y += this->velocity.y;
+  if(this->pos.y - this->size.y / 2 <= -game::scene->size.y / 2 || this->pos.y + this->size.y / 2 >= game::scene->size.y / 2) {
+    this->velocity.y *= -1;
+  }
+  auto toCheck = act::getByTrait(std::vector<std::string>({"solid"}));
+  for(int i = 0; i < toCheck.size(); i++) {
+    if(util::collides(this, toCheck[i])) {
+      if(toCheck[i]->name == "brick") {
+	act::kill("brick", toCheck[i]->id);
+      }
+
+      float overlapX = (this->size.x / 2 + toCheck[i]->size.x / 2) - std::abs(this->pos.x - toCheck[i]->pos.x);
+      float overlapY = (this->size.y / 2 + toCheck[i]->size.y / 2) - std::abs(this->pos.y - toCheck[i]->pos.y);
+      if(overlapX < overlapY) {
+	this->velocity.x *= -1;
+      } else if (overlapY < overlapX) {
+	this->velocity.y *= -1;
+      } else {
+	this->velocity.x *= -1;
+	this->velocity.y *= -1;
+      }
+
+
+	
+    }
+  }
+  
+  if(this->pos.x - this->size.x / 2 <= -game::scene->size.x / 2 || this->pos.x + this->size.x / 2 >= game::scene->size.x / 2) {
+      this->velocity.x *= -1;
+  }
+}
+
+void Ball::draw() {
+  cx.drawRect(this->pos, this->size, sf::Color::White);
+}
+
+Ball::Ball() : Actor(C2d(), C2d(10)) {
+  this->velocity.x = (rand() % 3 + 4) * (rand() % 100 < 50 ? -1:1);
+  this->velocity.y = (rand() % 3 + 4) * (rand() % 100 < 50 ? -1:1);
+}
+
 void Scene0::onLoad() {
   bck::spawnBackground(new SolidBackground(sf::Color::Black));
   act::spawn("paddle", new Paddle(250));
+  act::spawn("ball", new Ball());
 }
 
 int main() {
   engine::init(Config(C2d(800,600), "breakout"));
   act::define("paddle", std::vector<std::string>({"solid"}));
+  act::define("ball", std::vector<std::string>());
   Scene0 x;
   x.load();
   engine::mainLoop();

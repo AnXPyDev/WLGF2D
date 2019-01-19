@@ -44,6 +44,8 @@ void wgf::engine::mainLoop() {
       if (event.type == sf::Event::Closed) {
 	wgf::game::viewport.window.close();
       }
+      if(event.type == sf::Event::LostFocus) wgf::isWinFocused = false;
+      if(event.type == sf::Event::GainedFocus) wgf::isWinFocused = true;
       if (event.type == sf::Event::Resized) {
 	// update the view to the new size of the game::viewport.window
 	sf::FloatRect visibleArea(0, 0, wgf::game::viewport.size.x, wgf::game::viewport.size.y);
@@ -58,3 +60,5 @@ void wgf::engine::init(wgf::Config config) {
   wgf::game::viewport.set(config.viewsize, config.name);
   wgf::cx.set(&wgf::game::viewport);
 }
+
+bool wgf::isWinFocused = true;

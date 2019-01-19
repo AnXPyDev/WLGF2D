@@ -11,7 +11,6 @@
 
 // Feel free to modify and redistribute or do whatever you want with this
 // After all you are free ...
-                                        
 // This is the main header file used by WLGF2D
 // In this file is included the global namespace containing every component of the engine
 
@@ -187,6 +186,8 @@ namespace wgf {
     void tick();
     void init(Config config);
   }
+
+  extern bool isWinFocused;
 
 
 }
