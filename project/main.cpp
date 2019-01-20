@@ -11,9 +11,13 @@ public:
   void onLoad();
 };
 
+Scene0 s0;
+
 class Paddle : public wgf::Actor {
 public:
-  Paddle(float ypos) : Actor(wgf::C2d(0, ypos), wgf::C2d(75, 10), "paddle") {
+  Paddle(float ypos) : Actor("paddle") {
+    this->pos = C2d(0, (game::scene->size.y / 2) * 0.75);
+    this->size = C2d(75,10);
     this->speed = 10;
   };
   void tick();
@@ -55,6 +59,9 @@ void Ball::tick() {
     if(util::collides(this, toCheck[i])) {
       if(toCheck[i]->name == "brick") {
 	act::kill("brick", toCheck[i]->id);
+	if(act::instances[act::keys["brick"]].size() == 0) {
+	  s0.load();
+	}
       }
 
       float overlapX = (this->size.x / 2 + toCheck[i]->size.x / 2) - std::abs(this->pos.x - toCheck[i]->pos.x);
@@ -82,15 +89,21 @@ void Ball::draw() {
   cx.drawRect(this->pos, this->size, sf::Color::White);
 }
 
-Ball::Ball() : Actor(C2d(), C2d(10)) {
+Ball::Ball() : Actor("ball") {
   this->velocity.x = (rand() % 3 + 4) * (rand() % 100 < 50 ? -1:1);
   this->velocity.y = (rand() % 3 + 4) * (rand() % 100 < 50 ? -1:1);
+  this->pos = C2d();
+  this->size = C2d(10);
+  this->persistent = true;
 }
 
 class Brick : public Actor {
 public:
   void draw();
-  Brick(C2d _pos) : Actor(_pos, C2d(60, 20), "brick") {};
+  Brick(C2d _pos) : Actor("brick") {
+    this->pos = _pos;
+    this->size = C2d(60,20);
+  };
 };
 
 void Brick::draw() {
@@ -102,7 +115,7 @@ void Scene0::onLoad() {
   act::spawn("paddle", new Paddle(250));
   act::spawn("ball", new Ball());
   for(int x = -game::scene->size.x / 2 + 40; x < game::scene->size.x / 2; x += 80) {
-    for(int y = -game::scene->size.y / 2 + 20; y < -40; y += 40) {
+    for(int y = -game::scene->size.y / 2 + 20; y < -120; y += 40) {
       act::spawn("brick", new Brick(C2d(x,y)));
     }
   }
@@ -113,7 +126,6 @@ int main() {
   act::define("paddle", std::vector<std::string>({"solid"}));
   act::define("ball", std::vector<std::string>());
   act::define("brick", std::vector<std::string>({"solid"}));
-  Scene0 x;
-  x.load();
+  s0.load();
   engine::mainLoop();
 }

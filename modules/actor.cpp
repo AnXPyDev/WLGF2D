@@ -4,11 +4,12 @@
 
 
 // Constructor for actor class
-wgf::Actor::Actor(wgf::C2d pos, wgf::C2d size, std::string name) {
+wgf::Actor::Actor(std::string name) {
   this->id = 0;
-  this->pos = pos;
-  this->size = size;
+  this->pos = wgf::C2d();
+  this->size = wgf::C2d();
   this->name = name;
+  this->persistent = false;
 }
 
 void wgf::Actor::update() {

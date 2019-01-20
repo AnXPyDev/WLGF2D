@@ -92,12 +92,13 @@ namespace wgf {
   public:
     int id;
     std::string name;
+    bool persistent;
     C2d pos;
     C2d size;
     void update();
     virtual void tick();
     virtual void draw();
-    Actor(C2d pos, C2d size, std::string name = "default");
+    Actor(std::string name = "default");
   };
 
   // Class for a room like object
