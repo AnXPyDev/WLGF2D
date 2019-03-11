@@ -44,3 +44,14 @@ void wgf::Canvas::drawRect(wgf::C2d pos, wgf::C2d size, sf::Color color = sf::Co
   rect.setFillColor(color);
   this->view->window.draw(rect);
 }
+
+void wgf::Canvas::drawSprite(sf::Sprite sprite, C2d pos, C2d size) {
+  wgf::C2d r_pos = (pos - this->translate) * this->scale;
+  wgf::C2d r_scale;
+  wgf::C2d r_size = size * this->scale;
+  r_scale.x = (size.x / sprite.getTexture()->getSize().x) * this->scale.x;
+  r_scale.y = (size.y / sprite.getTexture()->getSize().y) * this->scale.y;
+  sprite.setPosition((int)(r_pos.x - r_size.x / 2 + this->base_offset.x), (int)(r_pos.y - r_size.y / 2 + this->base_offset.y));
+  sprite.setScale(r_scale.x, r_scale.y);
+  this->view->window.draw(sprite);
+}

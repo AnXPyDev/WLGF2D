@@ -82,6 +82,7 @@ namespace wgf {
     void save();
     void restore();
     void drawRect(C2d pos, C2d size, sf::Color color);
+    void drawSprite(sf::Sprite sprite, C2d pos, C2d size);
     Canvas(Viewport* view);
     Canvas();
     void set(Viewport* view);
@@ -170,6 +171,10 @@ namespace wgf {
     float approach(float x, float y, float amt);
     int approach(int x, int y, int amt);
     double approach(double x, double y, double amt);
+    // Wraps value around min and max
+    float wrap(float x, float min, float max);
+    int wrap(int x, int min, int max);
+    double wrap(double x, double min, double max);
     // Returns true if the actors' rectangle bounds collide
     bool collides(Actor* a0, Actor* a1);
   }

@@ -52,6 +52,30 @@ namespace wgf::util {
       return util::clamp(x + std::abs(amt), x, y);
     }
   }
+  float wrap(float x, float min, float max) {
+    if(x < min) {
+      return max;
+    } else if (x > max) {
+      return min;
+    }
+    return x;
+  }
+  int wrap(int x, int min, int max) {
+    if(x < min) {
+      return max;
+    } else if (x > max) {
+      return min;
+    }
+    return x;
+  }
+  double wrap(double x, double min, double max) {
+    if(x < min) {
+      return max;
+    } else if (x > max) {
+      return min;
+    }
+    return x;
+  }
   bool collides(Actor* a0, Actor* a1) {
     if((a0->pos.x + a0->size.x / 2 < a1->pos.x - a1->size.x / 2) ||
        (a1->pos.x + a1->size.x / 2 < a0->pos.x - a0->size.x / 2) ||

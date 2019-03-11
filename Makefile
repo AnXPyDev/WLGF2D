@@ -1,10 +1,10 @@
 CC=g++
 OBJ=c2.o game.o util.o canvas.o draw.o engine.o config.o viewport.o actor.o background.o scene.o
 DEPS=main.hpp
-
+PROJECT=project
 
 main: $(DEPS) $(OBJ) project/*.hpp
-	$(CC) -o main.out project/*.cpp $(OBJ) -I /usr/include/ -lsfml-graphics -lsfml-window -lsfml-system 
+	$(CC) -g -o main.out $(PROJECT)/*.cpp $(OBJ) -I /usr/include/ -lsfml-graphics -lsfml-window -lsfml-system 
 
 c2.o: $(DEPS)
 	$(CC) -c modules/c2.cpp -I /usr/include/
