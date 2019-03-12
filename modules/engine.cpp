@@ -18,6 +18,7 @@ void wgf::engine::tick() {
 
 // Definition of draw function
 void wgf::engine::draw() {
+  wgf::game::window->window.clear();
   for(int x = 0; x < wgf::bck::instances.size(); x++) {
     wgf::bck::instances[x]->draw();
   }

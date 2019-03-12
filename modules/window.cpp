@@ -13,6 +13,19 @@ wgf::Window::Window(wgf::C2d size, std::string name) {
 
 void wgf::Window::updateSize() {
   auto winSize = this->window.getSize();
+  float ratio;
+  if (this->size.x / this->size.y >= winSize.x / winSize.y) {
+    ratio = winSize.x / this->size.x;
+  } else {
+    ratio = winSize.y / this->size.y;
+  }
+
+  wgf::C2d newSize(this->size.x * ratio, this->size.y * ratio);
+  wgf::C2d newRatio = newSize / wgf::C2d(winSize.x, winSize.y);
+  this->window.clear();
+  this->view.setViewport(sf::FloatRect((1 - newRatio.x) / 2, (1 - newRatio.y) / 2, newRatio.x, newRatio.y));
+  
+
 }
 
 void wgf::Window::tickUpdate() {
