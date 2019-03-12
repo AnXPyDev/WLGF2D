@@ -149,6 +149,10 @@ namespace wgf {
     float wrap(float x, float min, float max);
     int wrap(int x, int min, int max);
     double wrap(double x, double min, double max);
+    // Linearly interpolates a value
+    float lerp(float x, float y, float perc);
+    int lerp(int x, int y, float perc);
+    double lerp(double x, double y, float perc);
     // Returns true if the actors' rectangle bounds collide
     bool collides(Actor* a0, Actor* a1);
   }

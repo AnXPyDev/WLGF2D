@@ -76,6 +76,15 @@ namespace wgf::util {
     }
     return x;
   }
+  float lerp(float x, float y, float perc) {
+    return (float) x + (y-x) * perc;
+  }
+  int lerp(int x, int y, int perc) {
+    return (int) x + (y-x) * perc;
+  }
+  double lerp(double x, double y, double perc) {
+    return (double) x + (y-x) * perc;
+  }
   bool collides(Actor* a0, Actor* a1) {
     if((a0->pos.x + a0->size.x / 2 < a1->pos.x - a1->size.x / 2) ||
        (a1->pos.x + a1->size.x / 2 < a0->pos.x - a0->size.x / 2) ||

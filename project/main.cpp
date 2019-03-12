@@ -11,7 +11,7 @@ class Player : public wgf::Actor {
 public:
   Player() : wgf::Actor("player") {
     this->size = wgf::C2d(50);
-    this->speed = wgf::C2d(5);
+    this->speed = wgf::C2d(8);
   }
   wgf::C2d speed;
   sf::RectangleShape drawRect;
@@ -28,7 +28,9 @@ public:
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
       this->pos.y += this->speed.y;
     }
-    window.view.setCenter(this->pos.x, this->pos.y);
+    wgf::C2d currentPos(window.view.getCenter());
+    float perc = 0.05;
+    window.view.setCenter(wgf::util::lerp(currentPos.x, this->pos.x, perc), wgf::util::lerp(currentPos.y, this->pos.y, perc));
 
   }
   void draw() {
