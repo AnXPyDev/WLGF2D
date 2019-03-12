@@ -1,5 +1,6 @@
 #include "../main.hpp"
 #include <vector>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 wgf::Background::Background() {};
@@ -12,12 +13,18 @@ wgf::SolidBackground::SolidBackground(sf::Color color) : Background() {
 }
 
 void wgf::SolidBackground::draw() {
-  wgf::cx.drawRect(wgf::C2d(), wgf::game::viewport.size, this->color);
+  auto size = wgf::game::window->view.getSize();
+  auto pos = wgf::game::window->view.getCenter();
+  this->rect.setFillColor(this->color);
+  this->rect.setSize(size);
+  this->rect.setOrigin(size.x / 2, size.y / 2);
+  this->rect.setPosition(pos);
+  game::window->window.draw(this->rect);
 }
 
 namespace wgf::bck {
   std::vector<Background*> instances;
-  void spawnBackground(Background* background) {
+  void spawn(Background* background) {
     bck::instances.push_back(background);
   }
 }

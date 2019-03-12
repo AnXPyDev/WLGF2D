@@ -1,58 +1,59 @@
-#include "../main.hpp"
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
-#include <SFML/Graphics.hpp>
+#include <vector>
+#include "../main.hpp"
 
-using namespace wgf;
+wgf::Window window(wgf::C2d(800, 600), "test");
+sf::RenderWindow* cx;
 
-class Scene0 : public Scene {
+class Player : public wgf::Actor {
 public:
-  Scene0() : Scene(wgf::C2d(800,600), 60) {};
-  void onLoad();
+  Player() : wgf::Actor("player") {
+    this->size = wgf::C2d(50);
+    this->speed = wgf::C2d(5);
+  }
+  wgf::C2d speed;
+  sf::RectangleShape drawRect;
+  void tick() {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+      this->pos.x += -this->speed.x;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+      this->pos.x += this->speed.x;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+      this->pos.y += -this->speed.y;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+      this->pos.y += this->speed.y;
+    }
+  }
+  void draw() {
+    this->drawRect.setSize(sf::Vector2f(this->size.x, this->size.y));
+    this->drawRect.setOrigin(this->size.x / 2, this->size.y / 2);
+    this->drawRect.setPosition(this->pos.x, this->pos.y);
+    cx->draw(this->drawRect);
+  }
+  
+	  
 };
 
-Scene0 s0;
-
-class Player : public Actor {
+class TestScene : public wgf::Scene {
 public:
-  Player() : Actor("player") {
-    this->pos.x = 0;
-    this->pos.y = 0;
-    this->size = C2d(50);
-    this->speed = C2d(5);
-  };
-  virtual void tick();
-  virtual void draw();
-  C2d speed;
+  TestScene() : wgf::Scene(wgf::C2d(800,600), 60) {};
+  void onLoad() {
+    wgf::bck::spawn(new wgf::SolidBackground(sf::Color::Red));
+    wgf::act::spawn("player", new Player());
+  }
 };
 
-void Player::tick() {
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    this->pos.y -= this->speed.y;
-  }
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-    this->pos.y += this->speed.y;
-  }
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    this->pos.x -= this->speed.x;
-  }
-  if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    this->pos.x += this->speed.x;
-  }
-}
+TestScene scene0;
 
-void Player::draw() {
-  cx.drawRect(this->pos, this->size, sf::Color::White);
-}
-
-void Scene0::onLoad() {
-  bck::spawnBackground(new SolidBackground(sf::Color::Black));
-  act::spawn("player", new Player());
-}
-
-int main() {
-  engine::init(Config(C2d(800,600), "breakout"));
-  act::define("player", std::vector<std::string>({"solid"}));
-  s0.load();
-  engine::mainLoop();
+int main(int argc, char** argv) {
+  cx = &window.window;
+  wgf::engine::init(&window);
+  wgf::act::define("player", std::vector<std::string>({}));
+  scene0.load();
+  wgf::engine::mainLoop();
 }

@@ -1,6 +1,6 @@
 #include "../main.hpp"
 
 namespace wgf::game {
-  wgf::Viewport viewport;
+  wgf::Window* window;
   wgf::Scene* scene;
 }

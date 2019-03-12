@@ -50,42 +50,14 @@ namespace wgf {
     C2d();
   };
 
-  // Class used for configuring initialization of game engine
-  struct Config {
-    C2d viewsize;
-    std::string name;
-    Config(C2d viewsize, std::string name);
-  };
-
-  // Viewport class stores SFML window instances
-  class Viewport {
+  class Window {
   public:
+    Window(C2d size, std::string name);
     C2d size;
     sf::RenderWindow window;
-    void set(C2d size, std::string name);
-    Viewport();
-  };
-
-  class Canvas {
-  public:
-    sf::RectangleShape draw_rect;
-    Viewport* view;
-    std::vector<C2d> save_translate;
-    std::vector<C2d> save_scale;
-    std::vector<C2d> save_rotation_origin;
-    std::vector<float> save_rotation;
-    C2d translate;
-    C2d scale;
-    C2d rotation_origin;
-    C2d base_offset;
-    float rotate;
-    void save();
-    void restore();
-    void drawRect(C2d pos, C2d size, sf::Color color);
-    void drawSprite(sf::Sprite sprite, C2d pos, C2d size);
-    Canvas(Viewport* view);
-    Canvas();
-    void set(Viewport* view);
+    sf::View view;
+    bool isFocused;
+    void updateSize();
   };
 
   // Basic prototype for ingame object (actor)
@@ -127,6 +99,7 @@ namespace wgf {
   class SolidBackground : public Background {
   public:
     sf::Color color;
+    sf::RectangleShape rect;
     void draw();
     SolidBackground(sf::Color color);
   };
@@ -134,7 +107,7 @@ namespace wgf {
   // Functions related to backgrounds
   namespace bck {
     extern std::vector<Background*> instances;
-    void spawnBackground(Background* background);
+    void spawn(Background* background);
   }
 
   // Functions related to actors
@@ -159,8 +132,6 @@ namespace wgf {
     std::vector<Actor*> getByTrait(std::vector<std::string> traits);
   }
 
-  extern Canvas cx;
-
   // Utility functions
   namespace util { 
     // Clamps a value between a min and max value
@@ -181,8 +152,8 @@ namespace wgf {
   
   // Holds information about project
   namespace game {
-    extern Viewport viewport;
     extern Scene* scene;
+    extern Window* window;
   }
   
   // This namespace includes functions needed to initialize and run a project
@@ -190,10 +161,6 @@ namespace wgf {
     void mainLoop();
     void draw();
     void tick();
-    void init(Config config);
+    void init(Window* window);
   }
-
-  extern bool isWinFocused;
-
-
 }
