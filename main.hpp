@@ -45,6 +45,8 @@ namespace wgf {
     C2d operator+ (float x); // Divides x and y values of this by other's values and returns new C2d
     C2d operator- (C2d other); // Divides x and y values of this by other's values and returns new C2d
     C2d operator- (float x); // Divides x and y values of this by other's values and returns new C2d
+    sf::Vector2f toSfVector();
+    C2d(sf::Vector2f sfVector);
     C2d(float x, float y);
     C2d(float x);
     C2d();
@@ -58,6 +60,7 @@ namespace wgf {
     sf::View view;
     bool isFocused;
     void updateSize();
+    void tickUpdate();
   };
 
   // Basic prototype for ingame object (actor)

@@ -28,6 +28,8 @@ public:
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
       this->pos.y += this->speed.y;
     }
+    window.view.setCenter(this->pos.x, this->pos.y);
+
   }
   void draw() {
     this->drawRect.setSize(sf::Vector2f(this->size.x, this->size.y));

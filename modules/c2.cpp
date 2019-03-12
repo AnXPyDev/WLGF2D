@@ -1,4 +1,5 @@
 #include "../main.hpp"
+#include <SFML/Graphics.hpp>
 
 // Constructs C2d with x and y
 wgf::C2d::C2d(float x, float y) {
@@ -16,6 +17,15 @@ wgf::C2d::C2d(float x) {
 wgf::C2d::C2d() {
   this->x = 0;
   this->y = 0;
+}
+
+wgf::C2d::C2d(sf::Vector2f sfVector) {
+  this->x = sfVector.x;
+  this->y = sfVector.y;
+}
+
+sf::Vector2f wgf::C2d::toSfVector() {
+  return sf::Vector2f(this->x, this->y);
 }
 
 void wgf::C2d::operator=  (C2d other) {

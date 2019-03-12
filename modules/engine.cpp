@@ -13,6 +13,7 @@ void wgf::engine::tick() {
       wgf::act::instances[x][y]->update();
     }
   }
+  wgf::game::window->tickUpdate();
 }
 
 // Definition of draw function
