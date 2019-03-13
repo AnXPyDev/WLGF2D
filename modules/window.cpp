@@ -1,33 +1,29 @@
+#include "../main.hpp"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include <string>
 #include <vector>
-#include "../main.hpp"
 
 wgf::Window::Window(wgf::C2d size, std::string name) {
   this->size = size;
   this->window.create(sf::VideoMode(this->size.x, this->size.y), name);
-  this->view = sf::View(sf::Vector2f(0,0), sf::Vector2f(this->size.x / 2, this->size.y / 2));
+  this->view = sf::View(sf::Vector2f(0, 0),
+                        sf::Vector2f(this->size.x / 2, this->size.y / 2));
   this->window.setView(this->view);
-  this->view.setViewport(sf::FloatRect(0.10f,0.10f,0.80f,0.80f));
+  this->view.setViewport(sf::FloatRect(0.10f, 0.10f, 0.80f, 0.80f));
 }
 
 void wgf::Window::updateSize() {
   auto winSize = this->window.getSize();
-  float ratio;
-  if (this->size.x / this->size.y >= winSize.x / winSize.y) {
-    ratio = winSize.x / this->size.x;
+  C2d ratio(1);
+  if ((float)winSize.x / (float)winSize.y >= this->size.x / this->size.y) {
+    ratio.x = (this->size.x * (winSize.y / this->size.y)) / winSize.x;
   } else {
-    ratio = winSize.y / this->size.y;
+    ratio.y = (this->size.y * (winSize.x / this->size.x)) / winSize.y;
   }
-
-  wgf::C2d newSize(this->size.x * ratio, this->size.y * ratio);
-  wgf::C2d newRatio = newSize / wgf::C2d(winSize.x, winSize.y);
-  this->window.clear();
-  this->view.setViewport(sf::FloatRect((1 - newRatio.x) / 2, (1 - newRatio.y) / 2, newRatio.x, newRatio.y));
-  
-
+  this->view.setViewport(
+      sf::FloatRect(wgf::C2d((1 - ratio.x) / 2, (1 - ratio.y) / 2).toSfVector(),
+                    ratio.toSfVector()));
 }
 
-void wgf::Window::tickUpdate() {
-  this->window.setView(this->view);
-}
+void wgf::Window::tickUpdate() { this->window.setView(this->view); }
