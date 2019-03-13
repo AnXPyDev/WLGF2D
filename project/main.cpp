@@ -49,6 +49,7 @@ public:
   void onLoad() {
     wgf::bck::spawn(new wgf::SolidBackground(sf::Color::Red));
     wgf::act::spawn("player", new Player());
+    window.view.rotate(45.f);
   }
 };
 

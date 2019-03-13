@@ -1,6 +1,7 @@
 #include "../main.hpp"
 #include <vector>
 #include <iostream>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 wgf::Background::Background() {};
@@ -16,8 +17,8 @@ void wgf::SolidBackground::draw() {
   auto size = wgf::game::window->view.getSize();
   auto pos = wgf::game::window->view.getCenter();
   this->rect.setFillColor(this->color);
-  this->rect.setSize(size);
-  this->rect.setOrigin(size.x / 2, size.y / 2);
+  this->rect.setSize(wgf::C2d(std::max(size.x, size.y) * 2).toSfVector());
+  this->rect.setOrigin(std::max(size.x, size.y), std::max(size.x, size.y));
   this->rect.setPosition(pos);
   game::window->window.draw(this->rect);
 }
