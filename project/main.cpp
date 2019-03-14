@@ -4,7 +4,7 @@
 #include <vector>
 #include "../main.hpp"
 
-wgf::Window window(wgf::C2d(800, 600), "test");
+wgf::Window window(wgf::C2d(1280, 720), "test");
 sf::RenderWindow* cx;
 
 class Player : public wgf::Actor {
@@ -14,7 +14,7 @@ public:
     this->speed = wgf::C2d(8);
   }
   wgf::C2d speed;
-  sf::RectangleShape drawRect;
+  wgf::A2d angle;
   void tick() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
       this->pos.x += -this->speed.x;
@@ -34,10 +34,7 @@ public:
 
   }
   void draw() {
-    this->drawRect.setSize(sf::Vector2f(this->size.x, this->size.y));
-    this->drawRect.setOrigin(this->size.x / 2, this->size.y / 2);
-    this->drawRect.setPosition(this->pos.x, this->pos.y);
-    cx->draw(this->drawRect);
+    wgf::draw::rect(this->pos, this->size, sf::Color::White);
   }
   
 	  
@@ -45,11 +42,10 @@ public:
 
 class TestScene : public wgf::Scene {
 public:
-  TestScene() : wgf::Scene(wgf::C2d(800,600), 60) {};
+  TestScene() : wgf::Scene(wgf::C2d(1280,720), 60) {};
   void onLoad() {
     wgf::bck::spawn(new wgf::SolidBackground(sf::Color::Red));
     wgf::act::spawn("player", new Player());
-    window.view.rotate(45.f);
   }
 };
 

@@ -52,6 +52,33 @@ namespace wgf {
     C2d();
   };
 
+  class A2d {
+  public:
+    float value;
+    void operator+= (A2d other);
+    void operator+= (float x);
+    void operator-= (A2d other);
+    void operator-= (float x);
+    void operator=  (A2d other);
+    void operator*= (A2d other);
+    void operator*= (float x);
+    void operator/= (A2d other);
+    void operator/= (float x);
+    A2d operator/ (A2d other);
+    A2d operator/ (float x);
+    A2d operator* (A2d other);
+    A2d operator* (float x);
+    A2d operator+ (A2d other);
+    A2d operator+ (float x);
+    A2d operator- (A2d other);
+    A2d operator- (float x);
+    float getDeg();
+    float getRad();
+    A2d();
+    A2d(float val);
+    A2d(float val, bool rad);
+  };
+
   class Window {
   public:
     Window(C2d size, std::string name);
@@ -161,6 +188,12 @@ namespace wgf {
   namespace game {
     extern Scene* scene;
     extern Window* window;
+  }
+
+  namespace draw {
+    extern sf::RectangleShape draw_rect;
+    void rect(C2d pos, C2d size, sf::Color, A2d angle = A2d());
+    void sprite(sf::Sprite sprite, C2d pos, C2d size, A2d angle = A2d());
   }
   
   // This namespace includes functions needed to initialize and run a project
