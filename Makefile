@@ -1,5 +1,5 @@
 CC=g++
-OBJ=c2.o a2.o game.o util.o engine.o window.o actor.o background.o scene.o draw.o
+OBJ=c2.o a2.o p2.o game.o util.o engine.o window.o actor.o background.o scene.o draw.o
 DEPS=main.hpp
 PROJECT=project
 
@@ -11,6 +11,9 @@ c2.o: $(DEPS)
 
 a2.o: $(DEPS)
 	$(CC) -c modules/a2.cpp -I /usr/include/
+
+p2.o: $(DEPS)
+	$(CC) -c modules/p2.cpp -I /usr/include/
 
 game.o: $(DEPS)
 	$(CC) -c modules/game.cpp -I /usr/include/

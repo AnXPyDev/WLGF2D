@@ -76,6 +76,30 @@ namespace wgf::util {
     }
     return x;
   }
+  float wrap(float x, float min, float max, bool precise) {
+    if(x < min) {
+      return max + (min - x);
+    } else if (x > max) {
+      return min + (x - max);
+    }
+    return x;
+  }
+  int wrap(int x, int min, int max, bool precise) {
+    if(x < min) {
+      return max + (min - x);
+    } else if (x > max) {
+      return min + (x - max);
+    }
+    return x;
+  }
+  double wrap(double x, double min, double max, bool precise) {
+    if(x < min) {
+      return max + (min - x);
+    } else if (x > max) {
+      return min + (x - max);
+    }
+    return x;
+  }
   float lerp(float x, float y, float perc) {
     return (float) x + (y-x) * perc;
   }
@@ -93,5 +117,8 @@ namespace wgf::util {
       return false;
     }
     return true;
+  }
+  wgf::A2d angleBetween(wgf::C2d v1, wgf::C2d v2) {
+    return wgf::A2d(M_PIf32 + std::atan2(v1.y - v2.y, v1.x - v2.x), true);
   }
 }

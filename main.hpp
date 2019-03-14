@@ -79,6 +79,17 @@ namespace wgf {
     A2d(float val, bool rad);
   };
 
+  class P2d {
+  public:
+    P2d();
+    P2d(std::vector<C2d> points);
+    int pointCount;
+    std::vector<C2d> points;
+    void setPoints(std::vector<C2d> points);
+    sf::ConvexShape sfShape();
+    sf::VertexArray sfArray();
+  };
+
   class Window {
   public:
     Window(C2d size, std::string name);
@@ -176,12 +187,17 @@ namespace wgf {
     float wrap(float x, float min, float max);
     int wrap(int x, int min, int max);
     double wrap(double x, double min, double max);
+    // Wraps value around min and max precisely
+    float wrap(float x, float min, float max, bool precise);
+    int wrap(int x, int min, int max, bool precise);
+    double wrap(double x, double min, double max, bool precise);
     // Linearly interpolates a value
     float lerp(float x, float y, float perc);
     int lerp(int x, int y, float perc);
     double lerp(double x, double y, float perc);
     // Returns true if the actors' rectangle bounds collide
     bool collides(Actor* a0, Actor* a1);
+    A2d angleBetween(C2d v1, C2d v2);
   }
   
   // Holds information about project
