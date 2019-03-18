@@ -197,6 +197,7 @@ namespace wgf {
     double lerp(double x, double y, float perc);
     // Returns true if the actors' rectangle bounds collide
     bool collides(Actor* a0, Actor* a1);
+    float distanceBetween(C2d v1, C2d v2);
     A2d angleBetween(C2d v1, C2d v2);
   }
   
@@ -208,7 +209,8 @@ namespace wgf {
 
   namespace draw {
     extern sf::RectangleShape draw_rect;
-    void rect(C2d pos, C2d size, sf::Color, A2d angle = A2d());
+    void rect(C2d pos, C2d size, sf::Color color = sf::Color::Black, A2d angle = A2d());
+    void line(C2d v1, C2d v2, float width = 1, sf::Color color = sf::Color::Black);
     void sprite(sf::Sprite sprite, C2d pos, C2d size, A2d angle = A2d());
   }
   

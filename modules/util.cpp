@@ -118,6 +118,9 @@ namespace wgf::util {
     }
     return true;
   }
+  float distanceBetween(wgf::C2d v1, wgf::C2d v2) {
+    return std::sqrt(std::pow(v1.x - v2.x, 2) + std::pow(v1.y - v2.y, 2));
+  }
   wgf::A2d angleBetween(wgf::C2d v1, wgf::C2d v2) {
     return wgf::A2d(M_PIf32 + std::atan2(v1.y - v2.y, v1.x - v2.x), true);
   }

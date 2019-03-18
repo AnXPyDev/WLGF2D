@@ -8,7 +8,7 @@ wgf::Window::Window(wgf::C2d size, std::string name) {
   this->size = size;
   this->window.create(sf::VideoMode(this->size.x, this->size.y), name);
   this->view = sf::View(sf::Vector2f(0, 0),
-                        sf::Vector2f(this->size.x / 2, this->size.y / 2));
+                        sf::Vector2f(this->size.x, this->size.y));
   this->window.setView(this->view);
   this->view.setViewport(sf::FloatRect(0.10f, 0.10f, 0.80f, 0.80f));
 }

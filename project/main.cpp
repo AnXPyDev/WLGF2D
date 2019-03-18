@@ -2,49 +2,37 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 #include "../main.hpp"
 
-wgf::Window window(wgf::C2d(1280, 720), "test");
+wgf::Window window(wgf::C2d(1280, 1280), "test");
 sf::RenderWindow* cx;
 
 class Player : public wgf::Actor {
 public:
+  float baseLen;
+  float bend;
   Player() : wgf::Actor("player") {
-    this->size = wgf::C2d(50);
-    this->speed = wgf::C2d(8);
+    this->baseLen = 500;
+    this->bend = 0;
   }
-  wgf::C2d speed;
-  wgf::A2d angle;
   void tick() {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-      this->pos.x += -this->speed.x;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-      this->pos.x += this->speed.x;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-      this->pos.y += -this->speed.y;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-      this->pos.y += this->speed.y;
-    }
-    wgf::C2d currentPos(window.view.getCenter());
-    float perc = 0.05;
-    window.view.setCenter(wgf::util::lerp(currentPos.x, this->pos.x, perc), wgf::util::lerp(currentPos.y, this->pos.y, perc));
-
+    this->bend += 1;
   }
   void draw() {
-    wgf::draw::rect(this->pos, this->size, sf::Color::White);
+    int height = std::sin(std::acos(this->baseLen / ( this->baseLen + this->bend ))) * (this->baseLen + this->bend);
+    wgf::draw::line(wgf::C2d(-this->baseLen / 2, 0), wgf::C2d(this->baseLen / 2, 0), 5, sf::Color::Black);
+    wgf::draw::line(wgf::C2d(this->baseLen / 2, 0), wgf::C2d(this->baseLen / 2, height), 5, sf::Color::Black);
+    wgf::draw::line(wgf::C2d(-this->baseLen / 2, 0), wgf::C2d(this->baseLen / 2, height), 5, sf::Color::Black);
+    std::cout << this->bend << " " << height << "\n";
   }
-  
-	  
 };
 
 class TestScene : public wgf::Scene {
 public:
-  TestScene() : wgf::Scene(wgf::C2d(1280,720), 60) {};
+  TestScene() : wgf::Scene(wgf::C2d(1280,1280), 60) {};
   void onLoad() {
-    wgf::bck::spawn(new wgf::SolidBackground(sf::Color::Red));
+    wgf::bck::spawn(new wgf::SolidBackground(sf::Color::White));
     wgf::act::spawn("player", new Player());
   }
 };
