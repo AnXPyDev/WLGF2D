@@ -24,7 +24,7 @@ wgf::C2d::C2d(sf::Vector2f sfVector) {
   this->y = sfVector.y;
 }
 
-wgf::C2d::C2d(wgf::C2d original) {
+wgf::C2d::C2d(const wgf::C2d& original) {
   this->x = original.x;
   this->y = original.y;
 }

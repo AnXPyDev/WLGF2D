@@ -1,3 +1,4 @@
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -5,48 +6,52 @@
 #include <cmath>
 #include "../main.hpp"
 
-wgf::Window window(wgf::C2d(640, 640), "test");
+using namespace std;
+using namespace wgf;
 
-wgf::C2d boardSize(20,20);
+Window window(C2d(640, 640), "snake");
 
-wgf::C2d cellSize(window.size / boardSize);
+C2d boardSize(20,20);
+C2d cellSize(window.size / boardSize);
 
-
-class Snake : public wgf::Actor {
+class Snake : public Actor {
 public:
-	wgf::C2d boardPos(0,0);
-	
-	
-}
+  vector<C2d> chain;
+  C2d velocity;
+  C2d boardPos;
+  Snake() : Actor("snake") {
+    this->boardPos = C2d(0);
+    this->chain.push_back(this->boardPos);
+    this->velocity = C2d(1,0);
+  }
 
-class Player : public wgf::Actor {
-public:
-	Player() : wgf::Actor("player") {
-	}
+  void tick() {
+    this->boardPos = this->boardPos + this->velocity;
+    this->chain.push_back(this->boardPos);
+    this->chain.erase(this->chain.begin());
+  }
 
-	void tick() {
-		
-	}
-	
-	void draw() {
-		wgf::draw::rect(this->pos, this->size, sf::Color::Green);
-	}
+  void draw() {
+    for (int i = 0; i < this->chain.size(); i++) {
+      draw::rect(this->chain[i] * cellSize, cellSize, sf::Color::Green);
+    }
+  }
 };
 
-class TestScene : public wgf::Scene {
+class MainScene : public Scene {
 public:
-	TestScene() : wgf::Scene(wgf::C2d(640, 640), 60) {};
+	MainScene() : Scene(window.size, 5) {};
 	void onLoad() {
-		wgf::bck::spawn(new wgf::SolidBackground(sf::Color::White));
-		wgf::act::spawn("player", new Player());
+		bck::spawn(new SolidBackground(sf::Color::White));
+		act::spawn("snake", new Snake());
 	}
 };
 
-TestScene testscene;
+MainScene mainscene;
 
 int main(int argc, char** argv) {
-	wgf::engine::init(&window);
-	wgf::act::define("player", std::vector<std::string>({}));
-	testscene.load();
-	wgf::engine::mainLoop();
+	engine::init(&window);
+	act::define("player", std::vector<std::string>({}));
+	mainscene.load();
+	engine::mainLoop();
 }
