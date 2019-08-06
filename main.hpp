@@ -47,6 +47,7 @@ namespace wgf {
     C2d operator- (float x); // Divides x and y values of this by other's values and returns new C2d
     sf::Vector2f toSfVector();
     C2d(sf::Vector2f sfVector);
+    C2d(C2d original);
     C2d(float x, float y);
     C2d(float x);
     C2d();

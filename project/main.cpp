@@ -7,12 +7,25 @@
 
 wgf::Window window(wgf::C2d(640, 640), "test");
 
+wgf::C2d boardSize(20,20);
+
+wgf::C2d cellSize(window.size / boardSize);
+
+
+class Snake : public wgf::Actor {
+public:
+	wgf::C2d boardPos(0,0);
+	
+	
+}
 
 class Player : public wgf::Actor {
 public:
 	Player() : wgf::Actor("player") {
-		this->pos = wgf::C2d(20);
-		this->size = wgf::C2d(20);
+	}
+
+	void tick() {
+		
 	}
 	
 	void draw() {
